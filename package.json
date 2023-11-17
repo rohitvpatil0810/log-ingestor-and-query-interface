@@ -1,0 +1,20 @@
+{
+  "name": "log-ingestor-and-query-interface",
+  "version": "1.0.0",
+  "description": "Log ingestor and query interface for efficient log data management. Ingest logs over HTTP and seamlessly query logs with full-text search and various field filters.",
+  "scripts": {
+    "start:dev": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rohitvpatil0810/log-ingestor-and-query-interface.git"
+  },
+  "author": "Rohit Patil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rohitvpatil0810/log-ingestor-and-query-interface/issues"
+  },
+  "homepage": "https://github.com/rohitvpatil0810/log-ingestor-and-query-interface#readme"
+}

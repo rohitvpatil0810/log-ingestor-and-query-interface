@@ -1,0 +1,19 @@
+{
+  "name": "log-ingestor-ana-query-interface-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rohitvpatil0810/log-ingestor-and-query-interface/backend"
+  },
+  "author": "Rohit Patil",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.1"
+  }
+}
