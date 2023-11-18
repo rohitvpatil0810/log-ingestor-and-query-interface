@@ -38,8 +38,23 @@ const insertLogs = async (req, res) => {
   }
 };
 
+// Controller to search logs based on a full-text query
+const searchLogs = async (req, res) => {
+  try {
+    const query = req.body.query;
+
+    const logs = await Log.find({ $text: { $search: query } });
+
+    res.status(200).json({ success: true, data: logs });
+  } catch (error) {
+    console.error("Error searching logs:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   ingestLog,
   insertLogs,
   getAllLogs,
+  searchLogs,
 };

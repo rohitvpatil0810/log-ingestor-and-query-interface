@@ -36,6 +36,15 @@ const logSchema = new mongoose.Schema({
   },
 });
 
+logSchema.index({
+  level: "text",
+  message: "text",
+  resourceId: "text",
+  traceId: "text",
+  spanId: "text",
+  commit: "text",
+});
+
 const Log = mongoose.model("Log", logSchema);
 
 module.exports = Log;
