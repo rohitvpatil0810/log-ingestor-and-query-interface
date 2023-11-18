@@ -38,12 +38,44 @@ const insertLogs = async (req, res) => {
   }
 };
 
-// Controller to search logs based on a full-text query
+// Controller to search logs based on a JSON object query
 const searchLogs = async (req, res) => {
   try {
-    const query = req.body.query;
+    const { searchQuery, filters } = req.body;
 
-    const logs = await Log.find({ $text: { $search: query } });
+    let logQuery = {};
+
+    if (searchQuery) {
+      logQuery.$text = { $search: searchQuery };
+    }
+
+    if (filters) {
+      const applyArrayFilter = (field, values) => {
+        if (values && values.length > 0) {
+          logQuery[field] = { $in: values };
+        }
+      };
+
+      const applyFiltersForFields = () => {
+        Object.keys(filters).forEach((field) => {
+          if (Array.isArray(filters[field])) {
+            applyArrayFilter(field, filters[field]);
+          }
+          // Add more logic for other types of filters if needed
+        });
+      };
+
+      applyFiltersForFields();
+
+      if (filters.timestampStart && filters.timestampEnd) {
+        logQuery.timestamp = {
+          $gte: new Date(filters.timestampStart),
+          $lte: new Date(filters.timestampEnd),
+        };
+      }
+    }
+
+    const logs = await Log.find(logQuery);
 
     res.status(200).json({ success: true, data: logs });
   } catch (error) {
@@ -52,12 +84,17 @@ const searchLogs = async (req, res) => {
   }
 };
 
-const getUniqueLogLevels = async (req, res) => {
+const getUniqueAttributes = async (req, res) => {
   try {
-    const uniqueLevels = await Log.distinct("level");
-    res.status(200).json({ success: true, data: uniqueLevels });
+    const attribute = req.params.attribute;
+    const uniqueValues = await Log.distinct(attribute);
+
+    res.status(200).json({ success: true, data: uniqueValues });
   } catch (error) {
-    console.error("Error getting unique log levels:", error);
+    console.error(
+      `Error getting unique values for ${req.params.attribute}:`,
+      error
+    );
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
@@ -67,5 +104,5 @@ module.exports = {
   insertLogs,
   getAllLogs,
   searchLogs,
-  getUniqueLogLevels,
+  getUniqueAttributes,
 };
