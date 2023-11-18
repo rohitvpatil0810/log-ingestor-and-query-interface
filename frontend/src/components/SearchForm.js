@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import ReactJson from "react-json-view";
 import themes from "../constants/rjvThemes";
+import ReactLoading from "react-loading";
 
 export default function SearchForm() {
   const currentDate = new Date().toISOString().split("T")[0];
@@ -71,6 +72,7 @@ export default function SearchForm() {
 
   const searchLogs = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       let apiUrl = process.env.REACT_APP_API_URL;
       const response = await fetch(apiUrl + "/logs/search", {
@@ -93,6 +95,7 @@ export default function SearchForm() {
     } catch (error) {
       console.error("Error fetching data:", error.message);
     }
+    setLoading(false);
   };
 
   const handleFilterChange = (field, selectedOption) => {
@@ -188,13 +191,7 @@ export default function SearchForm() {
       ))}
       {loading ? (
         <div className="flex items-center justify-between sm:col-span-2">
-          <button
-            disabled={error}
-            type="submit"
-            className="disabled:bg-slate-500 inline-block rounded-lg bg-dyte-blue px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-blue-600 focus-visible:ring active:bg-blue-700 md:text-base"
-          >
-            Search
-          </button>
+          <ReactLoading type={`bubbles`} color={`#2160FD`} />
 
           {/* <span className="text-sm text-gray-500">*Required</span> */}
         </div>
