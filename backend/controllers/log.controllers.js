@@ -86,9 +86,25 @@ const searchLogs = async (req, res) => {
 
 const getUniqueAttributes = async (req, res) => {
   try {
-    const attribute = req.params.attribute;
-    const uniqueValues = await Log.distinct(attribute);
+    const attributes = [
+      "level",
+      "resourceId",
+      "traceId",
+      "spanId",
+      "commit",
+      "metadata.parentResourceId",
+    ];
+    const getAttributesValue = async () => {
+      let uniqueValues = {};
+      await Promise.all(
+        attributes.map(async (attribute) => {
+          uniqueValues[attribute] = await Log.distinct(attribute);
+        })
+      );
+      return uniqueValues;
+    };
 
+    const uniqueValues = await getAttributesValue();
     res.status(200).json({ success: true, data: uniqueValues });
   } catch (error) {
     console.error(
