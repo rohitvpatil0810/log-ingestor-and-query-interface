@@ -130,6 +130,7 @@ export default function SearchForm() {
           Search
         </label>
         <input
+          placeholder="Search for logs..."
           name="search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -223,6 +224,9 @@ export default function SearchForm() {
         />
       </div>
       <div className="sm:col-span-2">
+        <div className="mb-2 inline-block text text-dyte-blue font-bold font-plus-jakarta-sans sm:text-base">
+          Search Results:
+        </div>
         <ReactJson src={logs} name={false} theme={outputTheme.label} />
       </div>
     </form>

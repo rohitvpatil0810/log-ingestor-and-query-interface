@@ -17,6 +17,20 @@ export default function App() {
           <SearchForm />
         </div>
       </div>
+      <div class="text-center">
+        <span class="text-dyte-black font-semibold">
+          👨‍💻 Developed by Rohit (
+          <a
+            href="https://github.com/rohitvpatil0810"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-dyte-blue underline cursor-pointer"
+          >
+            rohitvpatil0810
+          </a>
+          ) 👨‍💻
+        </span>
+      </div>
     </div>
   );
 }
