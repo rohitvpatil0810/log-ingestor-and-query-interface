@@ -66,7 +66,6 @@ const searchLogs = async (req, res) => {
       };
 
       applyFiltersForFields();
-
       if (filters.timestampStart && filters.timestampEnd) {
         logQuery.timestamp = {
           $gte: new Date(filters.timestampStart),
@@ -74,7 +73,6 @@ const searchLogs = async (req, res) => {
         };
       }
     }
-
     const logs = await Log.find(logQuery);
 
     res.status(200).json({ success: true, data: logs });
