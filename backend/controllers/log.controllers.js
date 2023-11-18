@@ -1,6 +1,6 @@
 const Log = require("../models/Log");
 
-const ingestLogs = async (req, res) => {
+const ingestLog = async (req, res) => {
   try {
     const logData = req.body;
 
@@ -25,7 +25,21 @@ const getAllLogs = async (req, res) => {
   }
 };
 
+const insertLogs = async (req, res) => {
+  try {
+    const logsData = req.body;
+    const logs = logsData.map((log) => new Log(log));
+    const savedLogs = await Log.insertMany(logs);
+
+    res.status(201).json({ success: true, logs: savedLogs });
+  } catch (error) {
+    console.error("Error inserting logs:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
-  ingestLogs,
+  ingestLog,
+  insertLogs,
   getAllLogs,
 };
