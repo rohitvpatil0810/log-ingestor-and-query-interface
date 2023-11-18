@@ -52,9 +52,20 @@ const searchLogs = async (req, res) => {
   }
 };
 
+const getUniqueLogLevels = async (req, res) => {
+  try {
+    const uniqueLevels = await Log.distinct("level");
+    res.status(200).json({ success: true, data: uniqueLevels });
+  } catch (error) {
+    console.error("Error getting unique log levels:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   ingestLog,
   insertLogs,
   getAllLogs,
   searchLogs,
+  getUniqueLogLevels,
 };
