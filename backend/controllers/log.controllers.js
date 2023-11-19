@@ -1,14 +1,13 @@
 const Log = require("../models/Log");
+const { addToBuffer } = require("./kafka/kafka-producer.controller");
 
 const ingestLog = async (req, res) => {
   try {
     const logData = req.body;
 
-    const newLog = new Log(logData);
+    addToBuffer(logData);
 
-    const savedLog = await newLog.save();
-
-    res.status(201).json({ success: true, logs: savedLog });
+    res.status(201).json({ success: true, data: "Log added to Database." });
   } catch (error) {
     console.error("Error ingesting log:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -73,6 +72,7 @@ const searchLogs = async (req, res) => {
         };
       }
     }
+
     const logs = await Log.find(logQuery);
 
     res.status(200).json({ success: true, data: logs });

@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 const connectToDatabase = require("./config/database");
 const router = require("./routes");
+require("./controllers/kafka/kafka-consumer.controller");
 
 const app = express();
 app.use(express.json());
