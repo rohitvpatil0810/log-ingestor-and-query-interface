@@ -21,10 +21,12 @@ Log Ingestor and Query Interface is a powerful tool designed for efficient log d
 Make sure you have the following installed globally on your system:
 
 - **Node.js and npm:** [Download and install Node.js](https://nodejs.org/).
+- **Node.js and npm:** [Download and install Node.js](https://nodejs.org/).
 - **Nodemon:** Install globally using `npm install -g nodemon`.
 - **Concurrently:** Install globally using `npm install -g concurrently`.
 - **Apache Kafka:** Follow the [Kafka Quickstart guide](https://kafka.apache.org/quickstart) for installation.
 - **Redis:** Follow the [Redis installation documentation](https://redis.io/docs/install/install-redis).
+- **MongoDB:** Follow the [MongoDB installation documentation](https://www.mongodb.com/docs/manual/administration/install-community/).
 
 ## Setup ⚙️
 
