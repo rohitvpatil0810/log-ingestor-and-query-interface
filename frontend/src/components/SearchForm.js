@@ -62,7 +62,6 @@ export default function SearchForm() {
         const data = await response.json();
         setUniqueValues(data.data);
       } catch (error) {
-        console.log(error);
         console.error("Error fetching unique values:", error.message);
       }
     };
@@ -99,11 +98,8 @@ export default function SearchForm() {
   };
 
   const handleFilterChange = (field, selectedOption) => {
-    console.log(field);
-    console.log(selectedOption);
     setFilters((prevFilters) => {
       prevFilters[field] = selectedOption.map((options) => options.label);
-      console.log(prevFilters[field]);
       return prevFilters;
     });
     setSelectedFilters((prevFilters) => ({
