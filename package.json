@@ -5,7 +5,8 @@
   "scripts": {
     "start:dev": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "cd frontend && npm start",
-    "start:backend": "cd backend && npm start"
+    "start:backend": "cd backend && npm start",
+    "start:kafka-consumer": "cd backend && cd controllers && cd kafka && nodemon kafka-consumer.controller.js"
   },
   "repository": {
     "type": "git",
