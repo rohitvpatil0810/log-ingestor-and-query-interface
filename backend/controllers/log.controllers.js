@@ -1,3 +1,4 @@
+const redisClient = require("../config/redis");
 const Log = require("../models/Log");
 const { addToBuffer } = require("./kafka/kafka-producer.controller");
 
@@ -41,7 +42,17 @@ const insertLogs = async (req, res) => {
 const searchLogs = async (req, res) => {
   try {
     const { searchQuery, filters } = req.body;
+    // Check if the data is already in the cache
+    const cacheKey = JSON.stringify({ searchQuery, filters });
+    const cachedData = await redisClient.get(cacheKey);
 
+    if (cachedData) {
+      console.log("getting cached data");
+      const parsedData = JSON.parse(cachedData);
+      return res.status(200).json({ success: true, data: parsedData });
+    }
+
+    // Data is not in the cache, fetch from the database
     let logQuery = {};
 
     if (searchQuery) {
@@ -54,7 +65,6 @@ const searchLogs = async (req, res) => {
           logQuery[field] = { $in: values };
         }
       };
-
       const applyFiltersForFields = () => {
         Object.keys(filters).forEach((field) => {
           if (Array.isArray(filters[field])) {
@@ -73,7 +83,11 @@ const searchLogs = async (req, res) => {
       }
     }
 
+    // Fetch logs from the database
     const logs = await Log.find(logQuery);
+
+    // Store fetched data in the cache for future use
+    redisClient.setEx(cacheKey, 60, JSON.stringify(logs));
 
     res.status(200).json({ success: true, data: logs });
   } catch (error) {
@@ -92,6 +106,15 @@ const getUniqueAttributes = async (req, res) => {
       "commit",
       "metadata.parentResourceId",
     ];
+
+    const cachedData = await redisClient.get("uniqueValues");
+
+    if (cachedData) {
+      // If data is in the cache, return it directly
+      const parsedData = JSON.parse(cachedData);
+      return res.status(200).json({ success: true, data: parsedData });
+    }
+
     const getAttributesValue = async () => {
       let uniqueValues = {};
       await Promise.all(
@@ -104,6 +127,8 @@ const getUniqueAttributes = async (req, res) => {
 
     const uniqueValues = await getAttributesValue();
     res.status(200).json({ success: true, data: uniqueValues });
+
+    redisClient.setEx("uniqueValues", 60, JSON.stringify(uniqueValues));
   } catch (error) {
     console.error(
       `Error getting unique values for ${req.params.attribute}:`,
