@@ -21,7 +21,6 @@ Log Ingestor and Query Interface is a powerful tool designed for efficient log d
 Make sure you have the following installed globally on your system:
 
 - **Node.js and npm:** [Download and install Node.js](https://nodejs.org/).
-- **Node.js and npm:** [Download and install Node.js](https://nodejs.org/).
 - **Nodemon:** Install globally using `npm install -g nodemon`.
 - **Concurrently:** Install globally using `npm install -g concurrently`.
 - **Apache Kafka:** Follow the [Kafka Quickstart guide](https://kafka.apache.org/quickstart) for installation.
@@ -44,6 +43,12 @@ Make sure you have the following installed globally on your system:
 
    cd ../frontend
    npm install
+   ```
+
+   If you encounter errors during the installation of frontend dependencies using `npm install`, you can try using the `--legacy-peer-deps` flag. This is a workaround for potential peer dependency issues.
+
+   ```bash
+   npm install --legacy-peer-deps
    ```
 
 3. Configure environment variables:
